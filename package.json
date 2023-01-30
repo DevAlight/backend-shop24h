@@ -1,0 +1,25 @@
+{
+  "name": "devcamp-shop24h-backend",
+  "version": "1.0.0",
+  "description": "Shop24/7",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/devcamp120.j2227/exercise/khailq/shop24h-project/devcamp-shop24h-backend.git"
+  },
+  "author": "Alight",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/devcamp120.j2227/exercise/khailq/shop24h-project/devcamp-shop24h-backend/issues"
+  },
+  "homepage": "https://gitlab.com/devcamp120.j2227/exercise/khailq/shop24h-project/devcamp-shop24h-backend#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "firebase-admin": "^11.4.1",
+    "mongoose": "^6.7.2"
+  }
+}
