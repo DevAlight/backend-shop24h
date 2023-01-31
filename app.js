@@ -26,7 +26,7 @@ next();
 
 
 //Ket noi mongo
-mongoose.connect('mongodb://mongo:iQJ7DCD3YIrrQPJCQpny@containers-us-west-59.railway.app:5711', function (error) {
+mongoose.connect('mongodb://mongo:MiMyogY3UnecNs9c1guT@containers-us-west-99.railway.app:7993', function (error) {
     if (error) throw error;
     console.log('Successfully connected MongoDB');
 })
