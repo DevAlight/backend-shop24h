@@ -26,7 +26,7 @@ next();
 
 
 //Ket noi mongo
-mongoose.connect('mongodb://127.0.0.1:27017/CRUD_Shop24h', function (error) {
+mongoose.connect('mongodb://mongo:iQJ7DCD3YIrrQPJCQpny@containers-us-west-59.railway.app:5711', function (error) {
     if (error) throw error;
     console.log('Successfully connected MongoDB');
 })
