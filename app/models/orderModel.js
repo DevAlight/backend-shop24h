@@ -10,6 +10,10 @@ const orderSchema = new Schema({
         type: String,
         unique: true        
     },
+    email: {
+        type: String,
+        required: true        
+    },
     shippedDate: {
         type: Date
     },
@@ -17,12 +21,34 @@ const orderSchema = new Schema({
         type: String
     },
     orderDetails: [{
-        type: mongoose.Types.ObjectId,
-        ref: "OrderDetail",
+        product: {
+            type: mongoose.Types.ObjectId,
+            ref: "Product",
+        },
+        name: {
+            type: String,
+            required: true           
+        },
+        imageUrl: {
+            type: String,
+            required: true
+        },
+        promotionPrice: {
+            type: Number,
+            required: true
+        },
+        quantity: {
+            type: Number,
+            default: 0
+        }
     }],
     cost: {
         type: Number,
         default: 0
+    },
+    status: {
+        type: String,
+        default: 'open'
     }
 }, {
     timestamps: true

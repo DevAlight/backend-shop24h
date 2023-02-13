@@ -10,14 +10,14 @@ const user = express.Router();
 // Import course controller
 const userController = require("../controllers/userController")
 
-user.post("/user", userController.createUser);
+user.post("/users", userController.createUser);
 
-// user.get("/customers", customerController.getAllCustomer);
+user.get("/users", userController.getAllUser);
 
-// user.get("/customers/:customerId", customerController.getCustomerByID);
+user.get("/users/:userId", userController.getUserByID);
 
-// user.put("/customers/:customerId", customerController.updateCustomer);
+// user.put("/customers/:customerId", userController.updateCustomer);
 
-// user.delete("/customers/:customerId", customerController.deleteCustomer);
+// user.delete("/customers/:customerId", userController.deleteCustomer);
 
 module.exports = user;

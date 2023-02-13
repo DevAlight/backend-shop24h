@@ -22,19 +22,24 @@ const customerSchema = new Schema({
     },
     address: {
         type: String,
-        default:""
+        default: ""
     },
     city: {
         type: String,
-        default:""
+        default: ""
     },
     country: {
         type: String,
-        default:""
+        default: ""
     },
     orders: [{
-        type: mongoose.Types.ObjectId,
-        ref :"Order",
+        order: {
+            type: mongoose.Types.ObjectId,
+            ref: "Order"
+        },
+        orderCode: {
+           /////
+        },
     }]
 }, {
     timestamps: true

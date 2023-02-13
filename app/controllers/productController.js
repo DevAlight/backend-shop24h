@@ -145,44 +145,48 @@ const getFilterProduct = (req, res) => {
         dataFilter.type = { '$regex': typeQuery, '$options': 'i' };
     }
     // B2: Validate dữ liệu   
-    if (limit) {
-        // B3: Gọi Model tạo dữ liệu
-        productModel.find(dataFilter)
-            .skip(skip)
-            .limit(limit)
-            .exec((error, data) => {
-                if (error) {
-                    return res.status(500).json({
-                        status: "Internal server error",
-                        message: error.message
-                    })
-                }
-                //neu chay ok
-                return res.status(200).json({
-                    status: "Get all Product",
-                    data: data
-                })
-
-            })
-    }
-    else {
-        // B3: Gọi Model tạo dữ liệu
-        productModel.find(dataFilter)
-            .exec((error, data) => {
-                if (error) {
-                    return res.status(500).json({
-                        status: "Internal server error",
-                        message: error.message
-                    })
-                }
-                //neu chay ok
-                return res.status(200).json({
-                    status: "Get all Product2",
-                    data: data
-                })
-
-            })
-    }
+    productModel.countDocuments(dataFilter)
+        .exec((error, total) => {
+            if (error) {
+                return res.status(500).json({
+                    status: "Internal server error",
+                    message: error.message
+                });
+            }
+            if (limit) {
+                productModel.find(dataFilter)
+                    .skip(skip)
+                    .limit(limit)
+                    .exec((error, data) => {
+                        if (error) {
+                            return res.status(500).json({
+                                status: "Internal server error",
+                                message: error.message
+                            });
+                        }
+                        return res.status(200).json({
+                            status: "Get all Product",
+                            data: data,
+                            full: total
+                        });
+                    });
+            } else {
+                productModel.find(dataFilter)
+                    .exec((error, data) => {
+                        if (error) {
+                            return res.status(500).json({
+                                status: "Internal server error",
+                                message: error.message
+                            });
+                        }
+                        return res.status(200).json({
+                            status: "Get all Product",
+                            data: data,
+                            full: total
+                        });
+                    });
+            }
+        });
 
 }
 //const getLimitProduct
@@ -269,42 +273,42 @@ const updateProduct = (req, res) => {
         })
     }
     // Kiểm tra name
-    if (!body.name) {
+    if (/^\s*$/.test(body.name)) {
         return res.status(400).json({
             status: "Bad Request",
             message: "name không hợp lệ"
         })
     }
     // Kiểm tra name
-    if (!body.description) {
+    if (/^\s*$/.test(body.description)) {
         return res.status(400).json({
             status: "Bad Request",
             message: "description không hợp lệ"
         })
     }
     // Kiểm tra type
-    if (!body.type) {
+    if (/^\s*$/.test(body.type)) {
         return res.status(400).json({
             status: "Bad Request",
             message: "type không hợp lệ"
         })
     }
     // Kiểm tra imageUrl
-    if (!body.imageUrl) {
+    if (/^\s*$/.test(body.imageUrl)) {
         return res.status(400).json({
             status: "Bad Request",
             message: "imageUrl không hợp lệ"
         })
     }
     // Kiểm tra buyPrice
-    if (!body.buyPrice) {
+    if (/^\s*$/.test(body.buyPrice)) {
         return res.status(400).json({
             status: "Bad Request",
             message: "buyPrice không hợp lệ"
         })
     }
     // Kiểm tra promotionPrice
-    if (!body.promotionPrice) {
+    if (/^\s*$/.test(body.promotionPrice)) {
         return res.status(400).json({
             status: "Bad Request",
             message: "promotionPrice không hợp lệ"
@@ -314,19 +318,19 @@ const updateProduct = (req, res) => {
     // B3: Gọi Model tạo dữ liệu
     const updateProduct = {}
 
-    if (body.name !== undefined) {
+    if (body.name ) {
         updateProduct.name = body.name
     }
-    if (body.description !== undefined) {
+    if (body.description ) {
         updateProduct.description = body.description
     }
-    if (body.type !== undefined) {
+    if (body.type ) {
         updateProduct.type = body.type
     }
-    if (body.imageUrl !== undefined) {
+    if (body.imageUrl ) {
         updateProduct.imageUrl = body.imageUrl
     }
-    if (body.promotionPrice !== undefined) {
+    if (body.promotionPrice ) {
         updateProduct.promotionPrice = body.promotionPrice
     }
 

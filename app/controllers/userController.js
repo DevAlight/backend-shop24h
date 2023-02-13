@@ -16,20 +16,20 @@ const createUser = (req, res) => {
             message: "user không hợp lệ"
         })
     }
-    // Kiểm tra password
-    if (!body.password) {
+    // Kiểm tra role
+    if (!body.role) {
         return res.status(400).json({
             status: "Bad Request",
             message: "password không hợp lệ"
         })
     }
     // B3: Gọi Model tạo dữ liệu
-    const newCustomer = {
+    const newUser = {
         _id: mongoose.Types.ObjectId(),
         user: body.user,
-        password: body.password
+        role: body.role
     }
-    userModel.create(newCustomer, (error, data) => {
+    userModel.create(newUser, (error, data) => {
         if (error) {
             return res.status(500).json({
                 status: "Internal server error",
@@ -37,18 +37,19 @@ const createUser = (req, res) => {
             })
         }
         return res.status(201).json({
-            status: "Create  Customer successfully",
+            status: "Create  newUser successfully",
             data: data
         })
     })
 }
 //const getAllCustomer
-const getAllCustomer = (req, res) => {
-    const email = req.query.email;
+const getAllUser = (req, res) => {    
+    const user = req.query.user;    
+    console.log(user);
     // B1: Chuẩn bị dữ liệu
     // B2: Validate dữ liệu
-    if (email) {
-        userModel.findOne({ email: email })
+    if (user) {
+        userModel.findOne({user:user})            
             .exec((error, data) => {
                 if (error) {
                     return res.status(500).json({
@@ -81,22 +82,21 @@ const getAllCustomer = (req, res) => {
         })
 
     }
-
 }
-//const getCustomerByID
-const getCustomerByID = (req, res) => {
+//const getUserByID
+const getUserByID = (req, res) => {   
     // B1: Chuẩn bị dữ liệu
-    let customerId = req.params.customerId;
+    let userId = req.params.userId;
     // B2: Validate dữ liệu
     // Kiểm tra Title
-    if (!mongoose.Types.ObjectId.isValid(customerId)) {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({
             status: "Bad Request",
-            message: "productByID không hợp lệ"
+            message: "userId không hợp lệ"
         })
     }
     // B3: Gọi Model tạo dữ liệu
-    userModel.findById(customerId, (error, data) => {
+    userModel.findById(userId, (error, data) => {
         if (error) {
             return res.status(500).json({
                 status: "Internal server error",
@@ -105,10 +105,11 @@ const getCustomerByID = (req, res) => {
         }
         //neu tim dc
         return res.status(200).json({
-            status: "Get detail Customer successfully",
+            status: "Get detail User successfully",
             data: data
         })
     })
+
 }
 //const updateCustomer theo id
 const updateCustomer = (req, res) => {
@@ -228,7 +229,8 @@ const deleteCustomer = (req, res) => {
 }
 module.exports = {
     createUser,
-    getCustomerByID,
+    getAllUser,
+    getUserByID,
     updateCustomer,
     deleteCustomer
 }

@@ -5,7 +5,7 @@ const express = require("express");
 const product = express.Router();
 
 // Import course middleware
-//const courseMiddleware = require("../middlewares/courseMiddleware");
+const authMiddleware = require("../middlewares/auth-middleware");
 
 // Import course controller
 const productController = require("../controllers/productController")
@@ -20,8 +20,8 @@ product.get("/products-filter", productController.getFilterProduct);
 
 product.get("/products/:productId", productController.getProductByID);
 
-product.put("/products/:productId", productController.updateProduct);
+product.put("/products/:productId",authMiddleware, productController.updateProduct);
 
-product.delete("/products/:productId", productController.deleteProduct);
+product.delete("/products/:productId",authMiddleware, productController.deleteProduct);
 
 module.exports = product;

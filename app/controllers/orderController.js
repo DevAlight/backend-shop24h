@@ -35,9 +35,11 @@ const createOrder = (req, res) => {
         })
     }
     // B3: Gọi Model tạo dữ liệu
-     const newOrder = {
+    const newOrder = {
         _id: mongoose.Types.ObjectId(),
-        // shippedDate: body.shippedDate,        
+        // shippedDate: body.shippedDate, 
+        orderDetails: body.orderDetails,
+        email: body.email,
         note: body.note,
         cost: body.cost
     }
@@ -52,7 +54,7 @@ const createOrder = (req, res) => {
         // Thêm ID của oder mới vào mảng orders của Customer đã chọn
         customerModel.findByIdAndUpdate(customerId, {
             $push: {
-                orders: data._id
+                orders: { oder: data._id, orderCode: data.orderCode }
             }
         }, (err, updatedCourse) => {
             if (err) {
@@ -88,6 +90,69 @@ const getAllOrder = (req, res) => {
         })
 
     })
+}
+//const getFilterOrder
+const getFilterOrder = (req, res) => {
+    let skip = req.query.skip
+    let limit = req.query.limit;
+    let codeQuery = req.query.orderCode;
+    let statusQuery = req.query.status;
+    let dateStartQuery = req.query.dateStart;
+    console.log(dateStartQuery);    
+    // B1: Chuẩn bị dữ liệu
+    let dataFilter = {
+    };
+    if (codeQuery) {
+        dataFilter.orderCode = { '$regex': codeQuery, '$options': 'i' };
+    }
+    if (statusQuery != 'none') {
+        dataFilter.status = { '$regex': statusQuery, '$options': 'i' };
+    }
+    if (dateStartQuery !='undefined'&&dateStartQuery) {
+        dataFilter.orderDate = { $gte: dateStartQuery };
+    }
+   
+  
+    // B2: Validate dữ liệu   
+    if (limit) {
+        // B3: Gọi Model tạo dữ liệu
+        orderModel.find(dataFilter)
+            .skip(skip)
+            .limit(limit)
+            .exec((error, data) => {
+                if (error) {
+                    return res.status(500).json({
+                        status: "Internal server error",
+                        message: error.message
+                    })
+                }
+                //neu chay ok
+                return res.status(200).json({
+                    status: "Get all Order",
+                    data: data
+                })
+
+            })
+    }
+    else {
+        // B3: Gọi Model tạo dữ liệu
+        orderModel.find(dataFilter)
+            .exec((error, data) => {
+                if (error) {
+                    return res.status(500).json({
+                        status: "Internal server error",
+                        message: error.message
+                    })
+                }
+                //neu chay ok
+                return res.status(200).json({
+                    status: "Get all Product2",
+                    data: data
+                })
+
+            })
+    }
+
 }
 //const getAllOrderOfCustomer
 const getAllOrderOfCustomer = (req, res) => {
@@ -159,38 +224,25 @@ const updateOrderById = (req, res) => {
         })
     }
 
-    // Kiểm tra shippedDate
-    if (!body.shippedDate) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "shippedDate không hợp lệ"
-        })
-    }
-    // Kiểm tra note
-    if (!body.note) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "note không hợp lệ"
-        })
-    }
-    // Kiểm tra cost
-    if (!body.cost) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "cost không hợp lệ"
-        })
-    }
     // B3: Gọi Model tạo dữ liệu
     const updateNew = {}
-
+    if (body.email !== undefined) {
+        updateNew.email = body.email
+    }
     if (body.shippedDate !== undefined) {
         updateNew.shippedDate = body.shippedDate
     }
     if (body.note !== undefined) {
         updateNew.note = body.note
     }
+    if (body.orderDetails !== undefined) {
+        updateNew.orderDetails = body.orderDetails
+    }
     if (body.cost !== undefined) {
         updateNew.cost = body.cost
+    }
+    if (body.status !== undefined) {
+        updateNew.status = body.status
     }
     //ok het thi lam thoi
     orderModel.findByIdAndUpdate(orderId, updateNew, (error, data) => {
@@ -254,6 +306,7 @@ module.exports = {
     createOrder,
     getAllOrder,
     getAllOrderOfCustomer,
+    getFilterOrder,
     getOrderById,
     updateOrderById,
     deleteOrder

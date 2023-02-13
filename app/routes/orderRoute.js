@@ -14,6 +14,8 @@ order.post("/customers/:customerId/orders", orderController.createOrder);
 
 order.get("/orders", orderController.getAllOrder);
 
+order.get("/orders-filter", orderController.getFilterOrder);
+
 order.get("/orders/:orderId", orderController.getOrderById);
 
 order.get("/customers/:customerId/orders", orderController.getAllOrderOfCustomer);
