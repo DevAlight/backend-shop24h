@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 
 //khai bao cong
-const port = 8000;
+const port = process.env.PORT || 3333;;
 //khai bao route app
 const productRoute = require("./app/routes/productRoute");
 const customerRoute = require("./app/routes/customerRoute");
