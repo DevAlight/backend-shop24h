@@ -27,7 +27,7 @@ res.setHeader('Access-Control-Allow-Credentials', true);
 next(); 
 });
 app.use(cors());
-
+const MONGO_URL = process.env.MONGO_URL;
 
 //Ket noi mongo
 mongoose.connect(MONGO_URL, function (error) {
