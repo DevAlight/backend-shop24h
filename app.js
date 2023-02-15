@@ -30,7 +30,7 @@ app.use(cors());
 
 
 //Ket noi mongo
-mongoose.connect('mongodb://mongo:MiMyogY3UnecNs9c1guT@containers-us-west-99.railway.app:7993', function (error) {
+mongoose.connect(MONGO_URL, function (error) {
     if (error) throw error;
     console.log('Successfully connected MongoDB');
 })
