@@ -50,7 +50,7 @@ exports.getCostIn6Days = async (req, res) => {
         }
       ]);
       const result = [{
-        name: "Order",
+        name: "Total",
         data: costIn6Days.map(d => d.totalCost)
       }];
       res.json(result);

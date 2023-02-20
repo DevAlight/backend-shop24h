@@ -16,8 +16,8 @@ user.get("/users", userController.getAllUser);
 
 user.get("/users/:userId", userController.getUserByID);
 
-// user.put("/customers/:customerId", userController.updateCustomer);
+user.put("/users/:userId", userController.updateUser);
 
-// user.delete("/customers/:customerId", userController.deleteCustomer);
+user.delete("/users/:userId", userController.deleteUser);
 
 module.exports = user;

@@ -44,8 +44,7 @@ const createUser = (req, res) => {
 }
 //const getAllCustomer
 const getAllUser = (req, res) => {    
-    const user = req.query.user;    
-    console.log(user);
+    const user = req.query.user;  
     // B1: Chuẩn bị dữ liệu
     // B2: Validate dữ liệu
     if (user) {
@@ -111,84 +110,30 @@ const getUserByID = (req, res) => {
     })
 
 }
-//const updateCustomer theo id
-const updateCustomer = (req, res) => {
+//const updateUser theo id
+const updateUser = (req, res) => {
     // B1: Chuẩn bị dữ liệu
-    let customerId = req.params.customerId;
+    let userId = req.params.userId;
     let body = req.body;
     // B2: Validate dữ liệu
     //check luon co id ko
     if (!mongoose.Types.ObjectId.isValid(customerId)) {
         return res.status(400).json({
             status: "Bad Request",
-            message: "productTypeByID không hợp lệ"
+            message: "userId không hợp lệ"
         })
-    }
-    // Kiểm tra fullName
-    if (!body.fullName) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "fullName không hợp lệ"
-        })
-    }
-    // Kiểm tra phone
-    if (!body.phone) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "phone không hợp lệ"
-        })
-    }
-    // Kiểm tra email
-    if (!body.email) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "email không hợp lệ"
-        })
-    }
-    // Kiểm tra address
-    if (!body.address) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "address không hợp lệ"
-        })
-    }
-    // Kiểm tra city
-    if (!body.city) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "city không hợp lệ"
-        })
-    }
-    // Kiểm tra country
-    if (!body.country) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "country không hợp lệ"
-        })
-    }
+    }    
     // B3: Gọi Model tạo dữ liệu
     const updateNew = {}
 
-    if (body.fullName !== undefined) {
-        updateNew.fullName = body.fullName
+    if (body.user !== undefined) {
+        updateNew.user = body.user
     }
-    if (body.phone !== undefined) {
-        updateNew.phone = body.phone
-    }
-    if (body.email !== undefined) {
-        updateNew.email = body.email
-    }
-    if (body.address !== undefined) {
-        updateNew.address = body.address
-    }
-    if (body.city !== undefined) {
-        updateNew.city = body.city
-    }
-    if (body.country !== undefined) {
-        updateNew.country = body.country
-    }
+    if (body.role !== undefined) {
+        updateNew.role = body.role
+    }   
     //ok het thi lam thoi
-    userModel.findByIdAndUpdate(customerId, updateNew, (error, data) => {
+    userModel.findByIdAndUpdate(userId, updateNew, (error, data) => {
         if (error) {
             return res.status(500).json({
                 status: "Internal server error",
@@ -197,33 +142,32 @@ const updateCustomer = (req, res) => {
         }
 
         return res.status(200).json({
-            status: "Update Customer successfully",
+            status: "Update User successfully",
             data: updateNew
         })
     })
 }
 //Ham xoa
-const deleteCustomer = (req, res) => {
+const deleteUser = (req, res) => {
     // B1: Chuẩn bị dữ liệu
-    let customerId = req.params.customerId;
+    let userId = req.params.userId;
     // B2: Validate dữ liệu
     if (!mongoose.Types.ObjectId.isValid(customerId)) {
         return response.status(400).json({
             status: "Bad Request",
-            message: "Customer ID không hợp lệ"
+            message: "User ID không hợp lệ"
         })
     }
     // B3: Gọi Model tạo dữ liệu
-    userModel.findByIdAndDelete(customerId, (error, data) => {
+    userModel.findByIdAndDelete(userId, (error, data) => {
         if (error) {
             return res.status(500).json({
                 status: "Internal server error",
                 message: error.message
             })
         }
-
         return res.status(200).json({
-            status: "Delete Customer successfully"
+            status: "Delete User successfully"
         })
     })
 }
@@ -231,6 +175,6 @@ module.exports = {
     createUser,
     getAllUser,
     getUserByID,
-    updateCustomer,
-    deleteCustomer
+    updateUser,
+    deleteUser
 }

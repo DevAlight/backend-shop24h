@@ -5,23 +5,23 @@ const express = require("express");
 const order = express.Router();
 
 // Import course middleware
-//onst courseMiddleware = require("../middlewares/courseMiddleware");
+const orderMiddleware = require("../middlewares/orderMiddleware");
 
 // Import course controller
 const orderController = require("../controllers/orderController")
 
 order.post("/customers/:customerId/orders", orderController.createOrder);
 
-order.get("/orders", orderController.getAllOrder);
+order.get("/orders",orderMiddleware.orderMiddlewareGETALL, orderController.getAllOrder);
 
-order.get("/orders-filter", orderController.getFilterOrder);
+order.get("/orders-filter",orderMiddleware.orderMiddlewareGETALL, orderController.getFilterOrder);
 
 order.get("/orders/:orderId", orderController.getOrderById);
 
 order.get("/customers/:customerId/orders", orderController.getAllOrderOfCustomer);
 
-order.put("/orders/:orderId", orderController.updateOrderById);
+order.put("/orders/:orderId",orderMiddleware.orderMiddlewarePUT, orderController.updateOrderById);
 
-order.delete("/customers/:customerId/orders/:orderId", orderController.deleteOrder);
+order.delete("/customers/:customerId/orders/:orderId",orderMiddleware.orderMiddlewareDEL, orderController.deleteOrder);
 
 module.exports = order;

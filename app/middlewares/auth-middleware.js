@@ -4,7 +4,7 @@ const userModel = require("../models/userModel");
     auth-middleware.js
 */
 const firebase = require("../../firebase/admin");
-const authorizedRoles = ['admin', 'coadmin', 'helper'];
+const authorizedRoles = ['admin', 'co-op', 'helper'];
 function authMiddleware(request, response, next) {
   const headerToken = request.headers.authorization;
   if (!headerToken) {

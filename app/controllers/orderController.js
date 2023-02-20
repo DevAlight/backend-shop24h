@@ -97,8 +97,7 @@ const getFilterOrder = (req, res) => {
     let limit = req.query.limit;
     let codeQuery = req.query.orderCode;
     let statusQuery = req.query.status;
-    let dateStartQuery = req.query.dateStart;
-    console.log(dateStartQuery);    
+    let dateStartQuery = req.query.dateStart;       
     // B1: Chuẩn bị dữ liệu
     let dataFilter = {
     };
