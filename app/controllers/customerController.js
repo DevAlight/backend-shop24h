@@ -74,6 +74,37 @@ const createCustomer = (req, res) => {
         })
     })
 }
+//const getCustomerEmail
+const getCustomerEmail = (req, res) => {
+    const email = req.query.email;    
+    // B1: Chuẩn bị dữ liệu
+    // B2: Validate dữ liệu
+    if (email) {
+        customerModel.findOne({email:email})            
+            .exec((error, data) => {
+                if (error) {
+                    return res.status(500).json({
+                        status: "Internal server error",
+                        message: error.message
+                    })
+                }
+                //neu chay ok
+                return res.status(200).json({
+                    status: "Get User with Emaill",
+                    data: data
+                })
+
+            })
+    }
+    else {
+        return res.status(400).json({
+            status: "Bad Request",
+            message: "email??? không hợp lệ"
+        })
+
+    }
+
+}
 //const getAllCustomer
 const getAllCustomer = (req, res) => {
     const email = req.query.email;    
@@ -262,6 +293,7 @@ module.exports = {
     createCustomer,
     getAllCustomer,
     getCustomerByID,
+    getCustomerEmail,
     updateCustomer,
     deleteCustomer
 }

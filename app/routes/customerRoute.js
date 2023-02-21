@@ -14,6 +14,8 @@ customer.post("/customers", customerController.createCustomer);
 
 customer.get("/customers",customerMiddleware.customerGETALL, customerController.getAllCustomer);
 
+customer.get("/customersEmail", customerController.getCustomerEmail);
+
 customer.get("/customers/:customerId", customerController.getCustomerByID);
 
 customer.put("/customers/:customerId",customerMiddleware.customerPUT, customerController.updateCustomer);

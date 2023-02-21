@@ -8,11 +8,11 @@ const orderSchema = new Schema({
     },
     orderCode: {
         type: String,
-        unique: true        
+        unique: true
     },
     email: {
         type: String,
-        required: true        
+        required: true
     },
     shippedDate: {
         type: Date
@@ -27,7 +27,7 @@ const orderSchema = new Schema({
         },
         name: {
             type: String,
-            required: true           
+            required: true
         },
         imageUrl: {
             type: String,

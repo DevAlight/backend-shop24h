@@ -8,69 +8,49 @@ const customerModel = require("../models/customerModel");
 
 //const post new createCustomer
 const createOrder = (req, res) => {
-    debugger;
     // B1: Chuẩn bị dữ liệu
     const customerId = req.params.customerId;
     const body = req.body;
+
     // B2: Validate dữ liệu
-    // Kiểm tra shippedDate
-    // if (!body.shippedDate) {
-    //     return res.status(400).json({
-    //         status: "Bad Request",
-    //         message: "shippedDate không hợp lệ"
-    //     })
-    // }
-    // Kiểm tra note
-    if (!body.note) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "note không hợp lệ"
-        })
-    }
-    // Kiểm tra cost
-    if (!body.cost) {
-        return res.status(400).json({
-            status: "Bad Request",
-            message: "cost không hợp lệ"
-        })
-    }
+    // ...
+
     // B3: Gọi Model tạo dữ liệu
     const newOrder = {
         _id: mongoose.Types.ObjectId(),
-        // shippedDate: body.shippedDate, 
         orderDetails: body.orderDetails,
         email: body.email,
         note: body.note,
         cost: body.cost
     }
-    orderModel.create(newOrder, (error, data) => {
-        if (error) {
+    const createOrderPromise = orderModel.create(newOrder);
+
+    const updateCustomerPromise = customerModel.findByIdAndUpdate(
+        customerId, {
+            $push: {
+                orders: {
+                    order: newOrder._id,
+                    orderCode: newOrder.orderCode
+                }
+            }
+        }
+    );
+
+    Promise.all([createOrderPromise, updateCustomerPromise])
+        .then(([createdOrder, updatedCustomer]) => {
+            return res.status(201).json({
+                status: "Create Order Successfully",
+                data: createdOrder
+            })
+        })
+        .catch((error) => {
             return res.status(500).json({
                 status: "Internal server error",
                 message: error.message
             })
-        }
-
-        // Thêm ID của oder mới vào mảng orders của Customer đã chọn
-        customerModel.findByIdAndUpdate(customerId, {
-            $push: {
-                orders: { oder: data._id, orderCode: data.orderCode }
-            }
-        }, (err, updatedCourse) => {
-            if (err) {
-                return res.status(500).json({
-                    status: "Internal server error",
-                    message: err.message
-                })
-            }
-
-            return res.status(201).json({
-                status: "Create Order Successfully",
-                data: data
-            })
         })
-    })
 }
+
 //const getAllCustomer
 const getAllOrder = (req, res) => {
     // B1: Chuẩn bị dữ liệu
@@ -97,7 +77,7 @@ const getFilterOrder = (req, res) => {
     let limit = req.query.limit;
     let codeQuery = req.query.orderCode;
     let statusQuery = req.query.status;
-    let dateStartQuery = req.query.dateStart;       
+    let dateStartQuery = req.query.dateStart;
     // B1: Chuẩn bị dữ liệu
     let dataFilter = {
     };
@@ -107,11 +87,11 @@ const getFilterOrder = (req, res) => {
     if (statusQuery != 'none') {
         dataFilter.status = { '$regex': statusQuery, '$options': 'i' };
     }
-    if (dateStartQuery !='undefined'&&dateStartQuery) {
+    if (dateStartQuery != 'undefined' && dateStartQuery) {
         dataFilter.orderDate = { $gte: dateStartQuery };
     }
-   
-  
+
+
     // B2: Validate dữ liệu   
     if (limit) {
         // B3: Gọi Model tạo dữ liệu

@@ -38,7 +38,7 @@ const customerSchema = new Schema({
             ref: "Order"
         },
         orderCode: {
-           /////
+            type: String
         },
     }]
 }, {
