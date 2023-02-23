@@ -117,7 +117,7 @@ const updateUser = (req, res) => {
     let body = req.body;
     // B2: Validate dữ liệu
     //check luon co id ko
-    if (!mongoose.Types.ObjectId.isValid(customerId)) {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({
             status: "Bad Request",
             message: "userId không hợp lệ"
